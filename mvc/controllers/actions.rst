@@ -1,5 +1,5 @@
-Actions and Action Results
-==========================
+Controllers, Actions, and Action Results
+========================================
 
 By `Steve Smith`_
 
@@ -40,9 +40,7 @@ Any public method on a controller type is an action. Parameters on actions are b
 
 Action methods should contain logic for mapping an incoming request to a business concern. Business concerns should typically be represented as services that your controller accesses through :doc:`dependency injection <dependency-injection>`. Actions then map the result of the business action to an application state.
 
-Actions can return anything, but frequently will return an instance of ``IActionResult`` (or ``Task<IActionResult>`` for async methods) that produces a response. The action method is responsible for choosing `what kind of response`; the action result `does the responding`. You can either create and return your own ``ActionResult`` instance directly, or you can use one of the many helper methods available on the Controller base class.
-
-.. note:: ``ActionResult`` implements ``IActionResult``; there is no advantage to returning one over the other.
+Actions can return anything, but frequently will return an instance of ``IActionResult`` (or ``Task<IActionResult>`` for async methods) that produces a response. The action method is responsible for choosing `what kind of response`; the action result `does the responding`.
 
 Controller Helper Methods
 #########################
