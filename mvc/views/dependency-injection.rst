@@ -1,19 +1,22 @@
-Injecting a Service Into a View
+Injecting Services Into a Views
 ===============================
 
-By `Steve Smith`_, `Rick Anderson`_
+By `Steve Smith`_
 
-ASP.NET MVC 6 supports `dependency injection <https://docs.asp.net/en/latest/fundamentals/dependency-injection.html>`_ into views. This can be useful for view-specific services, such as localization or data required only for populating view elements.
+ASP.NET MVC 6 supports `dependency injection <https://docs.asp.net/en/latest/fundamentals/dependency-injection.html>`_ into views. This can be useful for view-specific services, such as localization or data required only for populating view elements. You should try to maintain `separation of concerns <http://deviq.com/separation-of-concerns>`_ between your controllers and views. Most of the data your views display should be passed in from the controller; injecting services into views is recommended only for view-specific data.
 
 .. TODO: Add localization sample in RC2 timeframe.
 
 `View sample files <https://github.com/aspnet/Docs/tree/1.0.0-rc1/mvc/views/dependency-injection/sample>`_
 
-.. warning:: When applying this functionality, ensure you maintain `separation of concerns <http://deviq.com/separation-of-concerns>`_ between your controllers and views. Most of the data your views  display should be passed in from the controller. This technique is recommended only for view-specific data.
-
 A Simple Example
 ----------------
-With the above warning in mind, you can inject a service into a view using the ``@inject`` directive, as shown below:
+You can inject a service into a view using the ``@inject`` directive. You can think of ``@inject`` as adding a property to your view, and populating the property using DI.
+
+The syntax for ``@inject``:
+	``@inject <type> <name>``
+
+An example of ``@inject`` in action:
 
 .. literalinclude:: dependency-injection/sample/src/ViewInjectSample/Views/Todo/Index.cshtml
   :linenos:
@@ -29,7 +32,7 @@ This view displays a list of ``ToDoItem`` instances, along with a summary showin
   :emphasize-lines: 5-6
   :dedent: 8
   
-The ``StatisticsService`` simply performs some calculations on the set of ``ToDoItem`` instances, which it accesses via a repository:
+The ``StatisticsService`` performs some calculations on the set of ``ToDoItem`` instances, which it accesses via a repository:
 
 
 .. literalinclude:: dependency-injection/sample/src/ViewInjectSample/Model/Services/StatisticsService.cs
@@ -37,17 +40,17 @@ The ``StatisticsService`` simply performs some calculations on the set of ``ToDo
   :language: c#
   :emphasize-lines: 16,21,27
 
-.. note:: In this sample the repository uses an in-memory collection. The implementation shown above is not recommended for large, remotely accessed data sets.
+The sample repository uses an in-memory collection. The implementation shown above (which operates on all of the data in memory) is not recommended for large, remotely accessed data sets.
 
-The end result of this approach is the display of data from both the model bound to the view as well as the service injected into the view:
+The sample displays data from the model bound to the view and the service injected into the view:
 
 .. image:: dependency-injection/_static/screenshot.png
 
 Populating Lookup Data
 ----------------------
-One example where you may want to use view injection is population of options for certain UI elements, such as dropdown lists. Consider a user profile form that includes options for specifying gender, state, and other preferences. Rendering such a form using a standard MVC approach would require the controller to request data access services for each of these sets of options, and then populate a model or ``ViewBag`` with each set of options to be bound.
+View injection can be useful to populate options in UI elements, such as dropdown lists. Consider a user profile form that includes options for specifying gender, state, and other preferences. Rendering such a form using a standard MVC approach would require the controller to request data access services for each of these sets of options, and then populate a model or ``ViewBag`` with each set of options to be bound.
 
-An alternative approach leverages services injected directly into the view for these common sets of options. This minimizes the amount of code required by the controller, moving this view element construction logic into the view itself. The Controller action to display a profile editing form only needs to pass the form the profile instance:
+An alternative approach injects services directly into the view to obtain the options. This minimizes the amount of code required by the controller, moving this view element construction logic into the view itself. The controller action to display a profile editing form only needs to pass the form the profile instance:
 
 .. literalinclude:: dependency-injection/sample/src/ViewInjectSample/Controllers/ProfileController.cs
   :linenos:

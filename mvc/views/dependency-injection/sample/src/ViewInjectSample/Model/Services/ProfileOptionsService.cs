@@ -12,7 +12,7 @@ namespace ViewInjectSample.Model.Services
 
         public List<State> ListStates()
         {
-            // the abbreviated states of america
+            // a few states from USA
             return new List<State>()
             {
                 new State("Alabama", "AL"),
